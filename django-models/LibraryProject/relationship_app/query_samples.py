@@ -7,9 +7,9 @@ def query_books_by_author(author_name):
     """
     try:
         author = Author.objects.get(name=author_name)
-        return author.books.all()
+        return Book.objects.filter(author=author)
     except Author.DoesNotExist:
-        return []
+        return Book.objects.none()
 
 
 def query_books_in_library(library_name):
@@ -20,7 +20,7 @@ def query_books_in_library(library_name):
         library = Library.objects.get(name=library_name)
         return library.books.all()
     except Library.DoesNotExist:
-        return []
+        return Book.objects.none()
 
 
 def query_librarian_for_library(library_name):
@@ -29,6 +29,6 @@ def query_librarian_for_library(library_name):
     """
     try:
         library = Library.objects.get(name=library_name)
-        return library.librarian
+        return Librarian.objects.get(library=library)
     except (Library.DoesNotExist, Librarian.DoesNotExist):
         return None
