@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.views.decorators.http import require_POST
 
 from django import forms
-from .models import Book
 
 # List all books
 def list_books(request):
@@ -174,3 +173,11 @@ def delete_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     book.delete()
     return redirect('book_list')
+
+Book.objects.filter(title__icontains=query)
+
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = "__all__"

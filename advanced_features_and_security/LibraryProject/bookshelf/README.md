@@ -20,3 +20,12 @@ Views are protected using @permission_required decorators.
 ## Testing
 Permissions were tested by logging in as users from each group and verifying access.
 403 Forbidden responses confirm correct enforcement.
+
+
+## Security Best Practices
+
+- DEBUG disabled for production safety
+- Secure cookies enforced via HTTPS
+- CSRF protection enabled in all forms
+- Django ORM used to prevent SQL injection
+- Content Security Policy implemented via django-csp
