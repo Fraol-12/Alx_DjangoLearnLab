@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import Library, Book  # <-- MUST include Library
 from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.views.decorators.http import require_POST
+from .forms import ExampleForm
 
 from django import forms
 
@@ -181,3 +182,15 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = "__all__"
+
+
+def example_form_view(request):
+    if request.method == "POST":
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("list_books")
+    else:
+        form = ExampleForm()
+
+    return render(request, "bookshelf/example_form.html", {"form": form}
