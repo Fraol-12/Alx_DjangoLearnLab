@@ -2,9 +2,14 @@ from django.db import models
 
 # Create your models here.
 
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from django.conf import settings 
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+
 
 class Author(models.Model):
     name = models.CharField(max_length=255)
@@ -55,7 +60,6 @@ class Librarian(models.Model):
         return self.name
 
 
-# ---- Add RBAC UserProfile ----
 class UserProfile(models.Model):
     ROLE_CHOICES = [
         ('Admin', 'Admin'),
@@ -63,7 +67,10 @@ class UserProfile(models.Model):
         ('Member', 'Member'),
     ]
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
 
     def __str__(self):
@@ -71,11 +78,10 @@ class UserProfile(models.Model):
 
 
 # Automatically create UserProfile when a new User is registered
-@receiver(post_save, sender=User)
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance, role='Member')  # default role is Member
-
 
 
 
