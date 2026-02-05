@@ -11,6 +11,12 @@ class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    filter_backends = [
+        filters.OrderingFilter,   # 👈 REQUIRED
+    ]
+ 
+
     # Filtering
     filterset_fields = ['author', 'publication_year']
     #Searching
