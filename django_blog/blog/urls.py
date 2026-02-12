@@ -2,6 +2,11 @@ from django.urls import path
 from django.http import HttpResponse
 from . import views
 from django.contrib.auth import views as auth_views
+from .views import (
+    PostCreateView, PostDeleteView,
+    PostListView, PostDetailView, PostUpdateView
+)
+
 
 
 def home(request):
@@ -15,5 +20,13 @@ urlpatterns = [
 
     path('register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
-    path('posts/', views.post_list, name='posts'),
+    path('posts/', PostListView.as_view(), name='posts'),
+    path('posts/<int:pk>', PostDetailView.as_view(), name='post-detail'),
+    path('posts/new/', PostCreateView.as_view(), name='post-create'),
+    path('posts/<int:pk>/edit/', PostUpdateView.as_view(), name='post-update'),
+    path('posts/<int:pk>/delete', PostDeleteView.as_view(), name='post-delete'),
 ]
+
+
+
+  
