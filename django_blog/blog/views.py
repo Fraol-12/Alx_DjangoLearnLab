@@ -10,7 +10,7 @@ from .forms import UserUpdateForm, PostForm, CommentForm
 from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Comment
-from django.urls import reverse_lazy 
+from django.urls import reverse_lazy , reverse 
 
 
 def home(request):
@@ -45,19 +45,20 @@ def profile(request):
 
     return render(request, 'blog/profile.html', {'form': form})    
 
-@login_required
-def add_comment(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
 
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post 
-            comment.author = request.user 
-            comment.save() 
+    def form_valid(self, form):
+        post = get_object_or_404(Post, pk=self.kwargs['post_id'])
+        form.instance.post = post
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
-    return redirect('post-detail', pk=post.pk) 
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={'pk': self.object.post.pk})
+
 
 # View single post
 class PostListView(ListView):
