@@ -133,7 +133,14 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('post-detail', kwargs={'pk': self.object.post.pk})    
     
+class TagPostListView(ListView):
+    model = Post
+    template_name = 'blog/tag_posts.html' 
+    context_object_name = 'posts'
 
+    def get_queryset(self):
+        return Post.objects.filter(tags_name=self.Kwargs['tag_name'])
+ 
     
 
 
