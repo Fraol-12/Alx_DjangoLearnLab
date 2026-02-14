@@ -9,30 +9,28 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['username', 'email']
 
 class PostForm(forms.ModelForm):
-    tags = forms.CharField(required=False, help_text='comma-separated tags')
-
     class Meta:
         model = Post
-        fields = ['title', 'content', 'tags'] 
+        fields = ['title', 'content', 'tags']
         widgets = {
             'tags': TagWidget(attrs={'placeholder': 'Enter tags separated by commas'}),
-        }       
+        }
 
     def save(self, commit=True):
-        instance = super().save(commit=False)    
+        instance = super().save(commit=False)
 
         if commit:
             instance.save()
 
-        tags_data = self.cleaned_data['tags']    
-        tag_list = [tag.strip() for tag in tags_data.split(',') if tag.strip()] 
+        # handle tags
+        tags_data = self.cleaned_data.get('tags', '')  # get tag string
+        tag_list = [tag.strip() for tag in tags_data.split(',') if tag.strip()]
 
         instance.tags.clear()
-        
         for tag_name in tag_list:
-            tag, created = Tag.objects.get_or_create(name=tag_name)
-            instance.tags.add(tag)
-        return instance    
+            instance.tags.add(tag_name)
+
+        return instance   
 
 class CommentForm(forms.ModelForm):
     content = forms.CharField(
