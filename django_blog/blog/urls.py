@@ -9,7 +9,6 @@ from .views import (
 )
 
 
-
 def home(request):
     return HttpResponse("Blog Home Page")
 
@@ -30,7 +29,7 @@ urlpatterns = [
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
     path('search/', SearchResultsView.as_view(), name='search'),
-    path('tags/<str:tag_name>/', TagPostListView.as_view(), name='tag-posts'),
+    path('tags/<str:tag_name>/', TagPostListView.as_view(), name='posts_by_tag'),
 ]
 
 

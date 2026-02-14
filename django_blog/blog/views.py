@@ -66,6 +66,15 @@ class PostListView(ListView):
     model = Post 
     template_name = 'blog/post_list.html'
     context_object_name = 'post' 
+    ordering = ['-published_date']
+
+
+    def get_queryset(self):
+        tag_name = self.kwargs.get('tag_name')
+        if tag_name:
+            return Post.objects.filter(tags__name__iexact=tag_name)
+        return Post.objects.all().order_by('-published_date')
+
 # View single post
 
 class PostDetailView(DetailView):
@@ -157,7 +166,19 @@ class SearchResultsView(ListView):
             ).distinct()
         return Post.objects.none() 
 
- 
+def search_posts(request):
+    query = request.GET.get('q') 
+    posts = Post.objects.none() 
+    if query:
+        posts = Post.objects.filter(
+            Q(title__icontains=query) | 
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+         
+    return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})    
+
+
     
 
 
