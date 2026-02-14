@@ -22,7 +22,7 @@ class PostForm(forms.ModelForm):
             instance.save()
 
         tags_data = self.cleaned_data['tags']    
-        tag_list = [tag.strip() for tag in tags_data.spilt(',') if tag.strip()] 
+        tag_list = [tag.strip() for tag in tags_data.split(',') if tag.strip()] 
 
         instance.tags.clear()
         

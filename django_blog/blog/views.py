@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView, DeleteView, CreateView, U
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Comment
 from django.urls import reverse_lazy , reverse 
+from django.db.models import Q 
 
 
 def home(request):
@@ -139,7 +140,23 @@ class TagPostListView(ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.filter(tags_name=self.Kwargs['tag_name'])
+        return Post.objects.filter(tags_name=self.kwargs['tag_name'])
+    
+class SearchResultsView(ListView):
+    model = Post 
+    template_name = 'blog/search_results.html' 
+    context_object_name = 'posts' 
+
+    def get_queryset(self):
+        query = self.request.Get.get('q') 
+        if query:
+            return Post.objects.filter(
+                Q(title__icontains=query) | 
+                Q(content__icontains=query) |
+                Q(tags__name__icontains=query)
+            ).distinct()
+        return Post.objects.none() 
+
  
     
 

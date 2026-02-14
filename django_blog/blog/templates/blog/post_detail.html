@@ -38,4 +38,12 @@
 {% endif %}
 
 
+<p>Tags:
+{% for tag in post.tags.all %}
+    <a href="{% url 'tag-posts' tag.name %}">{{ tag.name }}</a>
+{% endfor %}
+</p>
+
+
+
 {% endblock %}

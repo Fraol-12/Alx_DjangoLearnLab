@@ -3,8 +3,8 @@ from django.http import HttpResponse
 from . import views
 from django.contrib.auth import views as auth_views
 from .views import (
-    PostCreateView, PostDeleteView,
-    PostListView, PostDetailView, PostUpdateView,
+    PostCreateView, PostDeleteView, SearchResultsView,
+    PostListView, PostDetailView, PostUpdateView, TagPostListView,
     CommentCreateView, CommentDeleteView, CommentUpdateView
 )
 
@@ -29,6 +29,8 @@ urlpatterns = [
     path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='comment-create'),
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
+    path('search/', SearchResultsView.as_view(), name='search'),
+    path('tags/<str:tag_name>/', TagPostListView.as_view(), name='tag-posts'),
 ]
 
 
