@@ -32,17 +32,36 @@ This project implements user authentication and profile management as the founda
 ```
 social_media_api/
 │
-├── accounts/
+├── accounts/                  # User authentication and profile management
+│   ├── migrations/
 │   ├── models.py
 │   ├── serializers.py
 │   ├── views.py
-│   ├── urls.py
+│   └── urls.py
 │
-├── social_media_api/
+├── posts/                     # Posts, Comments, Likes
+│   ├── migrations/
+│   ├── models.py
+│   ├── serializers.py
+│   ├── permissions.py
+│   ├── views.py
+│   └── urls.py
+│
+├── notifications/             # Notification system
+│   ├── migrations/
+│   ├── models.py
+│   ├── serializers.py
+│   ├── views.py
+│   └── urls.py
+│
+├── social_media_api/          # Project settings
 │   ├── settings.py
 │   ├── urls.py
+│   ├── wsgi.py
+│   └── asgi.py
 │
 ├── manage.py
+└── README.md
 ```
 
 ---
@@ -194,14 +213,38 @@ Response:
 
 ---
 
-## 📈 Next Steps
+📈 Next Steps
 
-- Posts & Comments
-- Follow System
-- Feed Generation
-- Likes & Notifications
-- Production Deployment
+Implement Posts & Comments
 
+Implement Follow System & Feed
+
+Implement Likes & Notifications
+
+Deploy to production (Heroku, Render, AWS)
+
+---
+
+## 🚀 Deployment (Production-Ready)
+
+This project is ready for deployment to a production server.
+
+### Steps:
+
+1. Set environment variables:
+   - `DJANGO_SECRET_KEY`
+   - `DJANGO_DEBUG=False`
+   - `DJANGO_ALLOWED_HOSTS=your-domain.com`
+
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+
+python manage.py migrate
+
+python manage.py collectstatic --noinput
+
+gunicorn social_media_api.wsgi:application
 ---
 
 ## 📜 License
