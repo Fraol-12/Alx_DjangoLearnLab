@@ -6,8 +6,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "replace-me-for-prod")
-DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(",")
+DEBUG = False
+ALLOWED_HOSTS = ["*"]
 
 # Applications
 INSTALLED_APPS = [
