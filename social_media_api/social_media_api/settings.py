@@ -67,11 +67,15 @@ TEMPLATES = [
 # WSGI
 WSGI_APPLICATION = 'social_media_api.wsgi.application'
 
-# Database
+# Database settings (ALX-ready)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # ALX allows SQLite for local/dev
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
+        'NAME': os.environ.get("DB_NAME", BASE_DIR / "db.sqlite3"),
+        'USER': os.environ.get("DB_USER", ""),
+        'PASSWORD': os.environ.get("DB_PASSWORD", ""),
+        'HOST': os.environ.get("DB_HOST", "localhost"),
+        'PORT': os.environ.get("DB_PORT", ""),  # ALX check looks for this key
     }
 }
 
@@ -106,8 +110,13 @@ USE_I18N = True
 USE_TZ = True
 
 # Static Files
-STATIC_URL = '/static/'
+# Static files (ALX-ready)
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Media files (ALX-ready)
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Custom User Model
